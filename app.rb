@@ -116,7 +116,7 @@ get '/report/biweekly/:year-:month-:day.?:format?' do
 end
 
 post '/entries' do
-  data = JSON.parse(request.body)
+  data = JSON.parse(request.body.read)
   data['worker_id'] = Worker.find_or_create(user_name: data.delete('worker')).id
   data['date'] ||= DateTime.now
   e = Entry.create data
@@ -128,7 +128,7 @@ get '/entries/:id' do
 end
 
 put '/entries/:id' do
-  Entry[params[:id]].update(params)
+  Entry[params[:id]].update(JSON.parse(request.body.read))
 end
 
 get '/workers/:id' do
@@ -136,7 +136,7 @@ get '/workers/:id' do
 end
 
 put '/workers/:id' do
-  Worker[params[:id]].update(params)
+  Worker[params[:id]].update(JSON.parse(request.body.read))
 end
 
 get '/workers' do
