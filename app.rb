@@ -68,7 +68,7 @@ class Report
   end
 
   def to_text
-    all.reduce('') do |text, (worker, entries)|
+    all.reduce(+'') do |text, (worker, entries)|
       table = Terminal::Table.new headings: %w(Date Hours Description)
       table.title = "#{worker.user_name} (#{@description})"
       total_minutes = 0
