@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 DB = Sequel.connect(ENV.fetch('DATABASE_URL') { 'postgres://localhost:5432/time-card' })
 Sequel.extension :migration
 Sequel::Model.plugin :json_serializer
