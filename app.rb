@@ -72,13 +72,13 @@ class Report
       table = Terminal::Table.new headings: %w(Date Hours Description)
       table.title = "#{worker.user_name} (#{@description})"
       total_minutes = 0
-      add_row = ->(date, minutes) { table.add_row [date&.to_date, '%dh %dm' % [minutes./(60.0), minutes.modulo(60)], "$#{'%0.2f' % (minutes * 2.5)}"] }
+      add_row = ->(date, minutes, description) { table.add_row [date&.to_date, '%dh %dm' % [minutes./(60.0), minutes.modulo(60)], description] }
       entries.each do |e|
         total_minutes += e.minutes
-        add_row[e.date, e.minutes]
+        add_row[e.date, e.minutes, e.message]
       end
       table.add_separator
-      add_row[nil, total_minutes]
+      add_row[nil, total_minutes, "$#{'%0.2f' % (total_minutes * 2.5)}"]
       text << table.to_s << "\n\n"
     end
   end
