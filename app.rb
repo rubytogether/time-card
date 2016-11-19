@@ -3,6 +3,7 @@ require 'sinatra'
 require 'sequel'
 require 'terminal-table'
 require 'date'
+require 'slack-notifier'
 
 require_relative 'db'
 
@@ -84,6 +85,35 @@ class Report
   end
 end
 
+def notify_slack!(entry)
+  return unless url = ENV['SLACK_NOTIFICATION_WEBHOOK_URL']
+  notifier = Slack::Notifier.new(url, username: 'time_card')
+  attachments = [
+    {
+      text: notifier.escape(entry.message),
+      color: 'good',
+      fields: [
+        {
+          title: 'worker',
+          value: entry.worker.user_name,
+          short: true,
+        },
+        {
+          title: 'date',
+          value: entry.date.to_date,
+          short: true,
+        },
+        {
+          title: 'time',
+          value: '%dh %dm' % [entry.minutes./(60.0), entry.minutes.modulo(60)],
+          short: true,
+        },
+      ]
+    }
+  ]
+  notifier.ping attachments: attachments
+end
+
 get '/' do
   Entry.all.to_json
 end
@@ -120,6 +150,7 @@ post '/entries' do
   data['worker_id'] = Worker.find_or_create(user_name: data.delete('worker')).id
   data['date'] ||= DateTime.now
   e = Entry.create data
+  notify_slack!(e)
   redirect "/entries/#{e.id}"
 end
 
