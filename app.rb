@@ -46,7 +46,7 @@ class Report
   def self.entries(*query)
     Entry
       .where(*query)
-      .order_by(:worker_id)
+      .order_by(:worker_id, :date)
       .enum_for
       .group_by(&:worker_id)
       .values
