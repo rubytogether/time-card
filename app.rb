@@ -76,12 +76,21 @@ class Report
       add_row = ->(date, minutes, description) { table.add_row [date&.to_date, '%dh %dm' % [minutes./(60.0), minutes.modulo(60)], description] }
       entries.each do |e|
         total_minutes += e.minutes
-        add_row[e.date, e.minutes, e.message]
+        add_row[e.date, e.minutes, word_wrap(e.message)]
       end
       table.add_separator
       add_row[nil, total_minutes, "$#{'%0.2f' % (total_minutes * 2.5)}"]
       text << table.to_s << "\n\n"
     end
+  end
+
+  def word_wrap(text, line_width: 80, break_sequence: "\n")
+    text.split("\n").collect! do |line|
+      line.length > line_width ? line.gsub(
+        /(.{1,#{line_width}})(\s+|$)/,
+        "\\1#{break_sequence}"
+      ).strip : line
+    end * break_sequence
   end
 end
 
