@@ -1,0 +1,2 @@
+#!/bin/sh
+HEROKU_APP=ruby-together-time-card HKAPP=ruby-together-time-card exec "${HEROKU_COMMAND:-heroku}" "$@"
