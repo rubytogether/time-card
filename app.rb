@@ -171,6 +171,10 @@ put '/entries/:id' do
   Entry[params[:id]].update(JSON.parse(request.body.read))
 end
 
+delete '/entries/:id' do
+  Entry[params[:id]].delete
+end
+
 get '/workers/:id' do
   Worker[params[:id]].to_json(include: :entries)
 end
