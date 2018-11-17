@@ -2,8 +2,8 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.0)
-    daemons (1.2.4)
-    eventmachine (1.2.0.1)
+    daemons (1.2.6)
+    eventmachine (1.2.7)
     foreman (0.85.0)
       thor (~> 0.19.1)
     jaro_winkler (1.5.1)
@@ -37,7 +37,7 @@ GEM
     slack-notifier (1.5.1)
     terminal-table (1.8.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
-    thin (1.7.0)
+    thin (1.7.2)
       daemons (~> 1.0, >= 1.0.9)
       eventmachine (~> 1.0, >= 1.0.4)
       rack (>= 1, < 3)
