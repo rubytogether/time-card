@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 DB = Sequel.connect(ENV.fetch('DATABASE_URL') { 'postgres://localhost:5432/time-card' })
 Sequel.extension :migration
 Sequel::Model.plugin :json_serializer
@@ -22,7 +23,7 @@ migration = Sequel.migration do
 end
 begin
   migration.apply(DB, :up)
-rescue
+rescue StandardError
   nil
 end
 
