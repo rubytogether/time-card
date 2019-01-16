@@ -180,7 +180,10 @@ get '/workers/:id' do
 end
 
 put '/workers/:id' do
-  Worker[params[:id]].update(JSON.parse(request.body.read))
+  content_type 'application/json'
+  worker = Worker[params[:id]]
+  worker.update(JSON.parse(request.body.read))
+  worker.to_json
 end
 
 get '/workers' do
