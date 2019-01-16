@@ -7,13 +7,7 @@ require 'slack-notifier'
 
 require_relative 'db'
 
-class PostAuth < Rack::Auth::Basic
-  def call(env)
-    return @app.call(env) if env['REQUEST_METHOD'] == 'GET'
-    super
-  end
-end
-use PostAuth, 'Protected Area' do |username, password|
+use Rack::Auth::Basic, 'Protected Area' do |username, password|
   username == 'admin' && Digest::SHA2.hexdigest(password) == ENV['TIME_CARD_ADMIN_PASSWORD_HASH']
 end
 
