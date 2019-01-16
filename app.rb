@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'sinatra'
 require 'sequel'
 require 'terminal-table'
@@ -64,7 +65,7 @@ class Report
 
   def to_text
     all.reduce(+'') do |text, (worker, entries)|
-      table = Terminal::Table.new headings: %w(Date Hours Description)
+      table = Terminal::Table.new headings: %w[Date Hours Description]
       table.title = "#{worker.user_name} (#{@description})"
       total_minutes = 0
       add_row = ->(date, minutes, description) { table.add_row [date&.to_date, '%dh %dm' % [minutes./(60.0), minutes.modulo(60)], description] }
@@ -90,6 +91,7 @@ end
 
 def notify_slack!(entry)
   return unless url = ENV['SLACK_NOTIFICATION_WEBHOOK_URL']
+
   notifier = Slack::Notifier.new(url, username: 'time_card')
   attachments = [
     {
@@ -99,18 +101,18 @@ def notify_slack!(entry)
         {
           title: 'worker',
           value: entry.worker.user_name,
-          short: true,
+          short: true
         },
         {
           title: 'date',
           value: entry.date.to_date,
-          short: true,
+          short: true
         },
         {
           title: 'time',
           value: '%dh %dm' % [entry.minutes./(60.0), entry.minutes.modulo(60)],
-          short: true,
-        },
+          short: true
+        }
       ]
     }
   ]
