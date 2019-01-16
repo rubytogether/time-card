@@ -118,6 +118,7 @@ def notify_slack!(entry)
 end
 
 get '/' do
+  content_type 'application/json'
   Entry.all.to_json
 end
 
@@ -127,6 +128,7 @@ get '/report/monthly/:year-:month.?:format?' do
   report = Report.monthly(year: year, month: month)
   case params[:format]
   when 'json'
+    content_type 'application/json'
     content_type :json
     report.to_a.to_json
   else
@@ -140,6 +142,7 @@ get '/report/biweekly/:year-:month-:day.?:format?' do
   report = Report.bi_weekly(year: year, month: month, day: day)
   case params[:format]
   when 'json'
+    content_type 'application/json'
     content_type :json
     report.to_a.to_json
   else
@@ -158,10 +161,12 @@ post '/entries' do
 end
 
 get '/entries/:id' do
+  content_type 'application/json'
   Entry[params[:id]].to_json(include: :worker)
 end
 
 put '/entries/:id' do
+  content_type 'application/json'
   Entry[params[:id]].update(JSON.parse(request.body.read))
 end
 
@@ -170,6 +175,7 @@ delete '/entries/:id' do
 end
 
 get '/workers/:id' do
+  content_type 'application/json'
   Worker[params[:id]].to_json(include: :entries)
 end
 
@@ -178,5 +184,6 @@ put '/workers/:id' do
 end
 
 get '/workers' do
+  content_type 'application/json'
   Worker.all.to_json
 end
