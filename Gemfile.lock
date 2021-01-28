@@ -37,7 +37,7 @@ GEM
       rack-protection (= 2.0.5)
       tilt (~> 2.0)
     slack-notifier (1.5.1)
-    terminal-table (1.8.0)
+    terminal-table (3.0.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
     thin (1.7.2)
       daemons (~> 1.0, >= 1.0.9)
